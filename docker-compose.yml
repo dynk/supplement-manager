@@ -1,0 +1,18 @@
+version: "2"
+services:
+  app:
+    container_name: supplement-server
+    restart: always
+    build: .
+    ports:
+      - "3032:3032"
+    links:
+      - mongo
+  mongo:
+    container_name: supplement-db
+    image: mongo:3.5
+    command: mongod --port 27017 --bind_ip_all 
+    volumes:
+      - /data/supplement-db:/data/db
+    ports:
+      - "27017:27017"
