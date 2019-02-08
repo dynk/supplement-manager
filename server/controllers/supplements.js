@@ -31,7 +31,19 @@ const put = async (req, res) => {
   }
 };
 
+
+const destroy = async (req, res) => {
+  try{
+    const { params = {}} = req;
+    const supplements = await service.destroy(params.id);
+    return responseJson(res, supplements);
+  }catch(err){
+    return responseErrorJson(res, 'supplements::destroy', err);
+  }
+};
+
 module.exports = {
+  destroy,
   get,
   post,
   put

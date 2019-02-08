@@ -33,8 +33,12 @@ const put = (id, body = {}) => {
   return SupplementsModel.findOneAndUpdate({_id: id}, supplementBody);
 };
 
+const destroy = (id) => {
+  return SupplementsModel.remove({_id: id});
+};
 
 module.exports = {
+  destroy,
   get,
   post,
   put
