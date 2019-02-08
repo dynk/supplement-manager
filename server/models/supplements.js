@@ -12,7 +12,7 @@ const SupplementsSchema = new mongoose.Schema({
     type: String
   },
   stockKepingUnit: {
-    type: Number
+    type: String
   },
   vendorId: {
     type: String
