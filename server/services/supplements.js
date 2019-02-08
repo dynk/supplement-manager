@@ -28,9 +28,14 @@ const post = async (body = {}) => {
   }
 };
 
-const put = (id, body = {}) => {
+const put = async (id, body = {}) => {
   const supplementBody = pick(supplementFields, body);
-  return SupplementsModel.findOneAndUpdate({_id: id}, supplementBody);
+  const updatedSupplement = await SupplementsModel.findOneAndUpdate({_id: id}, supplementBody, {new: true});
+  if(updatedSupplement.stock <= updatedSupplement.lowStockWaterMark){
+    updatedSupplement.isCritcalStock = true;
+    await updatedSupplement.save();
+  }
+  return updatedSupplement;
 };
 
 const destroy = (id) => {
