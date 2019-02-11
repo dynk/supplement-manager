@@ -24,6 +24,11 @@ const UsersSchema = new mongoose.Schema({
     type: String,
     require: true,
     minlength: 1
+  },
+  accessLevel: {
+    type: String,
+    enum: ['ADMIN', 'REGULAR'],
+    default: 'REGULAR'
   }
 });
 
