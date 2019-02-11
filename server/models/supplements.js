@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// name, manufacturer, stock keeping unit, vendor Id, stock, low stock water mark, size, active ingredient, is vegan
 const SupplementsSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -15,7 +15,9 @@ const SupplementsSchema = new mongoose.Schema({
     type: String
   },
   vendorId: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'vendors',
+    alias:'vendor'
   },
   stock: {
     type: Number

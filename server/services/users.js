@@ -1,12 +1,5 @@
-const {
-  UsersModel
-} = require('../models/users');
-const {
-  pick
-} = require('ramda');
-
-
-
+const { UsersModel } = require('../models/users');
+const { pick } = require('ramda');
 
 function get(query) {
   const filters = parseFilterOptions(query);
@@ -20,7 +13,6 @@ function parseFilterOptions(query = {}) {
   const filters = pick(standardFilters,query);
   return filters;
 }
-
 
 module.exports = {
   get

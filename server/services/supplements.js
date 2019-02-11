@@ -17,10 +17,35 @@ const parseFilterOptions = (query = {}) => {
   return filters;
 };
 
+const parseVendorFilter = (query) => {
+  const { vendorName } = query;
+  const filter = {};
+  if(vendorName){
+    filter['vendor.name'] = vendorName;
+  }
+  return filter;
+};
+
 
 const get = (query) => {
   const filters = parseFilterOptions(query);
-  return SupplementsModel.find(filters);
+  return SupplementsModel.aggregate([
+    {
+      $match: filters
+    },
+    {
+      $lookup: {
+        from: 'vendors',
+        localField: 'vendorId',
+        foreignField: '_id',
+        as: 'vendor'
+      }
+    },
+    {
+      $match: parseVendorFilter(query)
+    }
+
+  ]);
 };
 
 const post = async (body = {}) => {
