@@ -14,6 +14,12 @@ if [ "$1" = "develop" ] || [ "$1" = "dev" ] || [ "$1" = "test" ] ; then
   npm run start:dev
 else
   echo "Deploying production"
-  git pull
+  export NODE_ENV=production 
+  export PORT=3032
+  export MONGODB_URI=mongo
+  export MONGODB_DATABASE_NAME=supplement
+  export MONGODB_PORT=27017
+  export ADMIN_CODE=secretadmincode123
+  export JWT_SECRET=secret123
   docker-compose up --build
 fi

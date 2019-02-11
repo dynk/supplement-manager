@@ -12,6 +12,15 @@ const get = async (req, res) => {
   }
 };
 
+const getCredentials = async (req, res) => {
+  try{
+
+    return responseJson(res, ['ADMIN', 'REGULAR']);
+  }catch(err){
+    return responseErrorJson(res, 'users::get', err);
+  }
+};
+
 const post = async (req, res) => {
   try{
     const {body ={}} = req;
@@ -35,6 +44,7 @@ const login = async (req, res) =>{
 
 module.exports = {
   get,
+  getCredentials,
   login,
   post
 };

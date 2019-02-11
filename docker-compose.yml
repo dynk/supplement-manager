@@ -4,6 +4,14 @@ services:
     container_name: supplement-server
     restart: always
     build: .
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DATABASE_NAME=${MONGODB_DATABASE_NAME}
+      - MONGODB_PORT=${MONGODB_PORT}
+      - ADMIN_CODE=${ADMIN_CODE}
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - "3032:3032"
     links:

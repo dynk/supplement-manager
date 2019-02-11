@@ -7,12 +7,14 @@ const supplementFields = ['name', 'manufacturer', 'stockKepingUnit', 'vendorId',
 const parseFilterOptions = (query = {}) => {
   const standardFilters = [
     'name',
-    'vendorId',
-    'stock'
+    'vendorId'
   ];
   const filters = pick(standardFilters,query);
   if(query.isCriticalStock){
     filters.isCriticalStock = parseBoolean(query.isCriticalStock);
+  }
+  if(query.stock){
+    filters.stock = parseInt(query.stock);
   }
   return filters;
 };

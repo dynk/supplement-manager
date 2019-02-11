@@ -4,7 +4,7 @@ const ctrl = require('../../controllers/supplements');
 const { isAdmin} = require('../../middlewares/authenticate');
 
 router.get('/', ctrl.get);
-router.post('/', ctrl.post);
+router.post('/', isAdmin, ctrl.post);
 router.put('/:id', isAdmin, ctrl.put);
 router.delete('/:id', isAdmin, ctrl.destroy);
 
