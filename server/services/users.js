@@ -1,4 +1,4 @@
-const { UsersModel } = require('../models/users');
+const  UsersModel  = require('../models/users');
 const { pick } = require('ramda');
 const ADMIN_CODE = process.env.ADMIN_CODE;
 
@@ -18,7 +18,7 @@ const parseFilterOptions = (query = {}) => {
 const post = async (body = {}) => {
 
   const {  adminCode } = body;
-  const userBody = pick(['name','email'], body);
+  const userBody = pick(['name','email','password'], body);
   if(adminCode && (adminCode === ADMIN_CODE)){
     userBody.accessLevel = 'ADMIN';
   }
@@ -28,7 +28,19 @@ const post = async (body = {}) => {
   return {user, authenticationToken};
 };
 
+const login = async (body = {}) => {
+  const requideFields = ['email', 'password'];
+  const userBody = pick(requideFields, body);
+  const userModel = await UsersModel.findByCredentials(userBody.email, userBody.password);
+  const authenticationToken = await userModel.generateAuthToken();
+  const user = userModel.toObject();
+  user.authenticationToken = authenticationToken;
+  user.id = userModel.id;
+  return {authenticationToken, user};
+};
+
 module.exports = {
   get,
+  login,
   post
 };

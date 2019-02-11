@@ -23,7 +23,18 @@ const post = async (req, res) => {
   }
 };
 
+const login = async (req, res) =>{
+  try{
+    const {user ,authenticationToken} = await service.login(req.body);
+    res.header('x-auth', authenticationToken);
+    return responseJson(res, pick(['id', 'email', 'authenticationToken'], user));
+  }catch(err) {
+    return responseErrorJson(res, 'users::login', err);
+  }
+};
+
 module.exports = {
   get,
+  login,
   post
 };

@@ -1,9 +1,9 @@
-const UsersModel = require('./../models/users');
+const UsersModel = require('../models/users');
 
 const isAdmin = (req, res, next) => {
   const authenticationToken = req.header('x-auth');
   UsersModel.findByToken(authenticationToken).then((user) => {
-    if (!user || !user.accessLevel !== 'ADMIN') {
+    if (!user || user.accessLevel !== 'ADMIN') {
       return Promise.reject();
     }
     req.user = user;
