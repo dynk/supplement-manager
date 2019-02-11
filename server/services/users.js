@@ -15,7 +15,7 @@ const parseFilterOptions = (query = {}) => {
   return filters;
 };
 
-const post = (body = {}) => {
+const post = async (body = {}) => {
 
   const {  adminCode } = body;
   const userBody = pick(['name','email'], body);
@@ -23,7 +23,9 @@ const post = (body = {}) => {
     userBody.accessLevel = 'ADMIN';
   }
   const user = new UsersModel(userBody);
-  return user.save();
+  await user.save();
+  const authenticationToken = await user.generateAuthToken();
+  return {user, authenticationToken};
 };
 
 module.exports = {

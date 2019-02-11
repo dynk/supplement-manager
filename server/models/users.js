@@ -46,7 +46,6 @@ const UsersSchema = new mongoose.Schema({
 UsersSchema.methods.generateAuthToken = function () {
   const user = this;
   const access = 'auth';
-  // TODO - return expiresIn
   const authenticationToken = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET, { expiresIn: '8h' }).toString();
   user.authenticationTokens.push({access, authenticationToken});
   return user.save().then(() => authenticationToken);

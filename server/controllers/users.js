@@ -15,8 +15,9 @@ const get = async (req, res) => {
 const post = async (req, res) => {
   try{
     const {body ={}} = req;
-    const users = await service.post(body);
-    return responseJson(res, users);
+    const {user, authenticationToken} = await service.post(body);
+    res.header('x-auth', authenticationToken);
+    return responseJson(res, pick(['id', 'name', 'email', 'accessLevel'], user));
   }catch(err){
     return responseErrorJson(res, 'users::post', err);
   }
