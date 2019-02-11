@@ -32,7 +32,7 @@ const SupplementsSchema = new mongoose.Schema({
   isVegan: {
     type: Boolean
   },
-  isCritcalStock: {
+  isCriticalStock: {
     type: Boolean,
     default: false
   },
@@ -42,7 +42,7 @@ const SupplementsSchema = new mongoose.Schema({
 SupplementsSchema.pre('save', async function (next) {
   const supplement = this;
   if(supplement.stock <= supplement.lowStockWaterMark){
-    supplement.isCritcalStock = true;
+    supplement.isCriticalStock = true;
   }
   next();
 });

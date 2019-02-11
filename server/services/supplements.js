@@ -1,13 +1,19 @@
 const { SupplementsModel } = require('../models/supplements');
 const { pick } = require('ramda');
+const { parseBoolean } = require('../utils/utils');
 
 const supplementFields = ['name', 'manufacturer', 'stockKepingUnit', 'vendorId', 'stock', 'lowStockWaterMark', 'size', 'activeIngredient', 'isVegan'];
 
 const parseFilterOptions = (query = {}) => {
   const standardFilters = [
-    'name'
+    'name',
+    'vendorId',
+    'stock'
   ];
   const filters = pick(standardFilters,query);
+  if(query.isCriticalStock){
+    filters.isCriticalStock = parseBoolean(query.isCriticalStock);
+  }
   return filters;
 };
 
@@ -32,7 +38,7 @@ const put = async (id, body = {}) => {
   const supplementBody = pick(supplementFields, body);
   const updatedSupplement = await SupplementsModel.findOneAndUpdate({_id: id}, supplementBody, {new: true});
   if(updatedSupplement.stock <= updatedSupplement.lowStockWaterMark){
-    updatedSupplement.isCritcalStock = true;
+    updatedSupplement.isCriticalStock = true;
     await updatedSupplement.save();
   }
   return updatedSupplement;
