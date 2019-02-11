@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 const UsersSchema = new mongoose.Schema({
   email: {
@@ -29,9 +30,27 @@ const UsersSchema = new mongoose.Schema({
     type: String,
     enum: ['ADMIN', 'REGULAR'],
     default: 'REGULAR'
-  }
+  },
+  authenticationTokens: [{
+    access: {
+      type: String,
+      required: true
+    },
+    authenticationToken: {
+      type: String,
+      required: true
+    }
+  }]
 });
 
+UsersSchema.methods.generateAuthToken = function () {
+  const user = this;
+  const access = 'auth';
+  // TODO - return expiresIn
+  const authenticationToken = jwt.sign({_id: user._id.toHexString(), access}, process.env.JWT_SECRET, { expiresIn: '8h' }).toString();
+  user.authenticationTokens.push({access, authenticationToken});
+  return user.save().then(() => authenticationToken);
+};
 
 UsersSchema.methods.toJSON = function () {
   const candidate = this;

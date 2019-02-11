@@ -1,5 +1,6 @@
 const { UsersModel } = require('../models/users');
 const { pick } = require('ramda');
+const ADMIN_CODE = process.env.ADMIN_CODE;
 
 const get = (query) => {
   const filters = parseFilterOptions(query);
@@ -18,7 +19,7 @@ const post = (body = {}) => {
 
   const {  adminCode } = body;
   const userBody = pick(['name','email'], body);
-  if(adminCode && (adminCode === 'secretadmincode123')){
+  if(adminCode && (adminCode === ADMIN_CODE)){
     userBody.accessLevel = 'ADMIN';
   }
   const user = new UsersModel(userBody);
